@@ -3,13 +3,18 @@ $(function () {
 });
 
 class MoviesApp {
+  static #sortTypes = ["a-z", "z-a", "0-10", "10-0"];
+
   constructor() {
+    this.sortType = MoviesApp.#sortTypes[0];
+
     this.movies = new Map();
     this.tableMovies = $("#table-movies");
 
     // Adding event listeners to DOM elements
     $("#inputs-movie").submit(this.handleSubmit.bind(this));
     this.tableMovies.on("click", ".btn-remove", this.handleRemove.bind(this));
+    $("#table-movies > thead").on("click", "th", this.handleSort.bind(this));
   }
 
   /**
@@ -20,6 +25,7 @@ class MoviesApp {
   handleSubmit(e) {
     e.preventDefault();
     this.addMovie($("#input-name").val(), Number($("#input-rating").val()));
+    this.sortMovies();
     this.displayMovies();
   }
 
@@ -33,6 +39,17 @@ class MoviesApp {
       e.target.parentElement.querySelector(".movie-name").innerText
     );
     e.target.parentElement.remove();
+  }
+
+  /**
+   * Handles the processing for sorting the movies in the HTML table.
+   *
+   * @param {Event} e The event for when a table header is clicked.
+   */
+  handleSort(e) {
+    this.switchSortType(e.target.innerText);
+    this.sortMovies();
+    this.displayMovies();
   }
 
   /**
@@ -52,6 +69,83 @@ class MoviesApp {
    */
   deleteMovie(name) {
     this.movies.delete(name);
+  }
+
+  /**
+   * Sorts the movies database (Map) according to the current sort type, replacing the movies Map with the newly ordered
+   * Map.
+   */
+  sortMovies() {
+    // https://www.geeksforgeeks.org/how-to-sort-a-map-in-javascript/
+
+    const collatorName = new Intl.Collator("default", { sensitivity: "base" });
+    const collatorRating = new Intl.Collator("default", { numeric: true });
+    let comparator;
+
+    switch (this.sortType) {
+      // alphabetically for name
+      // a-z
+      case MoviesApp.#sortTypes[0]:
+        comparator = (movie1, movie2) => {
+          return collatorName.compare(movie1[0], movie2[0]);
+        };
+        break;
+
+      // reverse alphabetically for name
+      // z-a
+      case MoviesApp.#sortTypes[1]:
+        comparator = (movie1, movie2) => {
+          return collatorName.compare(movie2[0], movie1[0]);
+        };
+        break;
+
+      // increasing numerically for rating
+      // 0-10
+      case MoviesApp.#sortTypes[2]:
+        comparator = (movie1, movie2) => {
+          return collatorRating.compare(movie1[1], movie2[1]);
+        };
+        break;
+
+      // decreasing numerically for rating
+      // 10-0
+      case MoviesApp.#sortTypes[3]:
+        comparator = (movie1, movie2) => {
+          return collatorRating.compare(movie2[1], movie1[1]);
+        };
+        break;
+
+      default:
+        throw new Error("Sort type needs to be valid.");
+    }
+
+    this.movies = new Map([...this.movies.entries()].sort(comparator));
+  }
+
+  /**
+   * Takes a text from a table header and switches the current type of sorting, along with changing the header text.
+   *
+   * @param {String} str The text from a table column header.
+   */
+  switchSortType(str) {
+    switch (str) {
+      case "Name ↓":
+        this.sortType = MoviesApp.#sortTypes[1];
+        $("#table-movies .thead-name").text("Name ↑");
+        break;
+      case "Name ↑":
+        this.sortType = MoviesApp.#sortTypes[0];
+        $("#table-movies .thead-name").text("Name ↓");
+        break;
+      case "Rating ↓":
+        this.sortType = MoviesApp.#sortTypes[3];
+        $("#table-movies .thead-rating").text("Rating ↑");
+        break;
+      case "Rating ↑":
+        this.sortType = MoviesApp.#sortTypes[2];
+        $("#table-movies .thead-rating").text("Rating ↓");
+        break;
+    }
   }
 
   /**
