@@ -29,7 +29,9 @@ class MoviesApp {
    * @param {Event} e The click event on the "remove" button.
    */
   handleRemove(e) {
-    this.deleteMovie(e.target.parentElement.firstChild.innerText);
+    this.deleteMovie(
+      e.target.parentElement.querySelector(".movie-name").innerText
+    );
     e.target.parentElement.remove();
   }
 
@@ -63,8 +65,8 @@ class MoviesApp {
         .children("tbody")
         .append(
           $("<tr>")
-            .append($("<td>").text(name))
-            .append($("<td>").text(rating))
+            .append($("<td>").text(name).addClass("movie-name"))
+            .append($("<td>").text(rating).addClass("movie-rating"))
             .append(
               $("<button>")
                 .attr("type", "button")
