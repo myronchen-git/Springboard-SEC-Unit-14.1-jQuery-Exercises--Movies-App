@@ -3,11 +3,6 @@ $(function () {
 });
 
 class MoviesApp {
-  static #$tableHeader = $("<tr>")
-    .append($("<th>").text("Name"))
-    .append($("<th>").text("Rating"))
-    .append($("<th>"));
-
   constructor() {
     this.movies = new Map();
     this.tableMovies = $("#table-movies");
@@ -61,20 +56,22 @@ class MoviesApp {
    * Creates the table rows for each movie in the database and appends it to the movies table.
    */
   displayMovies() {
-    this.tableMovies.empty().append(MoviesApp.#$tableHeader);
+    this.tableMovies.find("tbody > tr").remove();
 
     for (let [name, rating] of this.movies) {
-      this.tableMovies.append(
-        $("<tr>")
-          .append($("<td>").text(name))
-          .append($("<td>").text(rating))
-          .append(
-            $("<button>")
-              .attr("type", "button")
-              .addClass("btn-remove")
-              .html("&times;")
-          )
-      );
+      this.tableMovies
+        .children("tbody")
+        .append(
+          $("<tr>")
+            .append($("<td>").text(name))
+            .append($("<td>").text(rating))
+            .append(
+              $("<button>")
+                .attr("type", "button")
+                .addClass("btn-remove")
+                .html("&times;")
+            )
+        );
     }
   }
 }
