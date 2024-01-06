@@ -36,9 +36,10 @@ class MoviesApp {
    */
   handleRemove(e) {
     this.deleteMovie(
-      e.target.parentElement.querySelector(".movie-name").innerText
+      e.target.parentElement.parentElement.querySelector(".movie-name")
+        .innerText
     );
-    e.target.parentElement.remove();
+    e.target.parentElement.parentElement.remove();
   }
 
   /**
@@ -155,19 +156,19 @@ class MoviesApp {
     this.tableMovies.find("tbody > tr").remove();
 
     for (let [name, rating] of this.movies) {
-      this.tableMovies
-        .children("tbody")
-        .append(
-          $("<tr>")
-            .append($("<td>").text(name).addClass("movie-name"))
-            .append($("<td>").text(rating).addClass("movie-rating"))
-            .append(
+      this.tableMovies.children("tbody").append(
+        $("<tr>")
+          .append($("<td>").text(name).addClass("movie-name"))
+          .append($("<td>").text(rating).addClass("movie-rating"))
+          .append(
+            $("<td>").append(
               $("<button>")
                 .attr("type", "button")
                 .addClass("btn-remove")
                 .html("&times;")
             )
-        );
+          )
+      );
     }
   }
 }
