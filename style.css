@@ -1,0 +1,157 @@
+:root {
+  --color1: gold;
+  --color2: black;
+  --color2--trans: rgba(0, 0, 0, 0.5);
+  --color3: silver;
+}
+
+* {
+  box-sizing: border-box;
+
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: var(--color3);
+}
+
+header,
+section {
+  padding: 1rem 0;
+}
+
+.header__text-background-outset {
+  width: 90%;
+  padding: 0.4rem 0;
+
+  clip-path: polygon(0% 0%, 100% 0%, calc(100% - 4rem) 100%, 0% 100%);
+
+  background-color: var(--color2);
+}
+
+.header__text-background-midset {
+  padding: 0.4rem 0;
+
+  background-color: var(--color2);
+
+  border-style: dashed none;
+  border-color: white;
+  border-width: 0.3rem;
+}
+
+.header__text-background-inset {
+  padding: 1rem;
+
+  background-color: var(--color1);
+}
+
+.header_title {
+  margin: 0;
+}
+
+form,
+table {
+  width: 80%;
+
+  background-color: var(--color1);
+  box-shadow: 0.4rem -0.4rem var(--color2);
+}
+
+form {
+  padding: 3rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+form > div {
+  display: flex;
+  flex-direction: column;
+}
+
+form > * {
+  margin: 1rem;
+}
+
+table {
+  padding: 1rem;
+
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 1rem;
+  text-align: center;
+}
+
+.thead-name,
+.thead-rating {
+  width: 40%;
+}
+
+label {
+  padding: 0.5rem;
+}
+
+input,
+button {
+  opacity: 0.5;
+}
+
+input[type="submit"]:hover,
+button:hover {
+  box-shadow: 0 0 0.3rem 0.1rem var(--color2--trans);
+}
+
+input:hover,
+button:hover {
+  opacity: 0.75;
+}
+
+input:not([type="submit"]):focus,
+input[type="submit"]:active,
+button:active {
+  opacity: 1;
+}
+
+input:not([type="submit"]) {
+  padding: 0.5rem;
+
+  background-color: var(--color3);
+
+  border: var(--color2) solid 0.15rem;
+  border-radius: 0.5rem;
+}
+
+input[type="submit"],
+.btn-remove {
+  background-color: var(--color2);
+
+  border-style: none;
+  border-radius: 0.5rem;
+
+  color: white;
+}
+
+input[type="submit"] {
+  height: 2.5rem;
+  padding: 0 1rem;
+}
+
+.btn-remove {
+  width: 3rem;
+  height: 3rem;
+  margin: 0;
+  padding: 0;
+
+  font-size: 2rem;
+}
+
+@media (min-width: 800px) {
+  form {
+    flex-direction: row;
+  }
+}
